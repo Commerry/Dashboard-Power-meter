@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Sign in - Power Center</title>
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <script>(function () { try { var t = localStorage.getItem('pc-theme'); if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', t); } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); } })();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-0: #07080b; --surface: #111318; --surface-2: #171a21; --surface-3: #1e222b;
+      --line: #2a2f3a; --line-soft: #1f232c;
+      --text-1: #eef0f5; --text-2: #a4a9b8; --text-3: #6b7080;
+      --accent: #f5b942; --accent-2: #3dd6c0; --crit: #ef4d5c; --ok: #34d399;
+      --grad-accent: linear-gradient(135deg, #f5b942 0%, #f08a3c 55%, #3dd6c0 100%);
+      --lcd-bg: #0a0d0a; --lcd-fg: #ffb547; --lcd-ghost: rgba(255, 181, 71, .07); --lcd-glow: rgba(255, 181, 71, .45);
+      --panel-bg: rgba(12, 14, 18, .55); --grid-line: rgba(255, 255, 255, .04);
+      --radius-md: .8rem;
+      --font-ui: 'Inter', system-ui, 'Segoe UI', sans-serif; --font-mono: 'JetBrains Mono', Consolas, monospace;
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg-0: #f3f4f6; --surface: #ffffff; --surface-2: #f4f5f8; --surface-3: #e9ebf0;
+      --line: #d3d7df; --line-soft: #e6e8ee;
+      --text-1: #12141a; --text-2: #464c5c; --text-3: #767c8c;
+      --accent: #c98500; --accent-2: #0f9484; --crit: #d03b3b;
+      --grad-accent: linear-gradient(135deg, #e09a10 0%, #e2701f 55%, #0f9484 100%);
+      --panel-bg: rgba(255, 255, 255, .6); --grid-line: rgba(20, 24, 40, .06);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font-ui); color: var(--text-1); background: var(--bg-0);
+      -webkit-font-smoothing: antialiased; cursor: default; user-select: none; overflow: hidden;
+    }
+    input { cursor: text; user-select: text; }
+
+    /* ---- backdrop: drifting grid + two slow orbs ---- */
+    .bg { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
+    .bg .grid {
+      position: absolute; inset: -60px;
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 48px 48px; animation: drift 60s linear infinite;
+      mask-image: radial-gradient(ellipse at 35% 50%, black 20%, transparent 75%);
+    }
+    .bg .orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; animation: float 18s ease-in-out infinite alternate; }
+    .bg .o1 { width: 620px; height: 620px; left: -160px; top: -200px; background: radial-gradient(circle, rgba(245, 185, 66, .55), transparent 65%); }
+    .bg .o2 { width: 560px; height: 560px; right: -120px; bottom: -220px; background: radial-gradient(circle, rgba(61, 214, 192, .45), transparent 65%); animation-delay: -9s; }
+    @keyframes drift { from { transform: translate(0, 0); } to { transform: translate(48px, 48px); } }
+    @keyframes float { from { transform: translate(0, 0) scale(1); } to { transform: translate(40px, 30px) scale(1.08); } }
+
+    /* ---- layout ---- */
+    .wrap { position: relative; z-index: 1; min-height: 100vh; display: grid; grid-template-columns: 1.15fr .85fr; }
+    .brand-panel { display: flex; flex-direction: column; justify-content: center; padding: 4rem 5rem; gap: 2rem; }
+    .form-panel { display: flex; align-items: center; justify-content: center; padding: 2rem; }
+
+    /* ---- logo ---- */
+    .logo { display: flex; align-items: center; gap: 1.4rem; }
+    .mark { position: relative; width: 112px; height: 112px; flex: none; }
+    .mark svg.core { width: 112px; height: 112px; filter: drop-shadow(0 0 22px rgba(245, 185, 66, .35)); }
+    .mark .ring { position: absolute; inset: -14px; border-radius: 50%; border: 1.5px dashed rgba(245, 185, 66, .35); animation: spin 28s linear infinite; }
+    .mark .ring2 { position: absolute; inset: -26px; border-radius: 50%; border: 1px solid transparent; border-top-color: rgba(61, 214, 192, .55); border-right-color: rgba(61, 214, 192, .2); animation: spin 9s linear infinite reverse; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .wordmark { display: flex; flex-direction: column; gap: .2rem; }
+    .wordmark h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; background-image: var(--grad-accent); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .wordmark small { font-size: .72rem; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; color: var(--text-3); }
+
+    .tagline { font-size: 1.15rem; color: var(--text-2); line-height: 1.6; max-width: 520px; }
+    .tagline b { color: var(--text-1); }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; max-width: 620px; }
+    .feat { background: var(--panel-bg); border: 1px solid var(--line-soft); border-radius: var(--radius-md); padding: .85rem .95rem; backdrop-filter: blur(6px); }
+    .feat .ic { width: 30px; height: 30px; border-radius: .55rem; background: var(--surface-3); display: flex; align-items: center; justify-content: center; color: var(--accent); margin-bottom: .55rem; }
+    .feat .ic svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .feat b { display: block; font-size: .78rem; margin-bottom: .15rem; }
+    .feat span { font-size: .66rem; color: var(--text-3); line-height: 1.5; }
+
+    /* faux live readout, purely decorative */
+
+    /* ---- form ---- */
+    .card {
+      width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--line-soft); border-radius: 1.4rem;
+      padding: 2.2rem 2.1rem 1.8rem; box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .55); position: relative; overflow: hidden;
+      animation: rise .5s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background-image: var(--grad-accent); }
+    .card h2 { font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; }
+    .card .sub { font-size: .72rem; color: var(--text-3); margin: .3rem 0 1.4rem; }
+    label { display: block; font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin: 0 0 .4rem .1rem; }
+    .in { position: relative; margin-bottom: 1rem; }
+    .in svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+    input {
+      width: 100%; background: var(--surface-3); border: 1px solid var(--line); color: var(--text-1); border-radius: var(--radius-md);
+      padding: .72rem .9rem .72rem 2.5rem; font-family: var(--font-ui); font-size: .9rem; transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(245, 185, 66, .15); }
+    button {
+      width: 100%; border: none; border-radius: var(--radius-md); padding: .85rem; background-image: var(--grad-accent); color: #0b0b0d;
+      font-family: var(--font-ui); font-size: .92rem; font-weight: 800; cursor: pointer; margin-top: .4rem; transition: filter .15s ease, transform .1s ease; letter-spacing: .02em;
+    }
+    :root[data-theme="light"] button { color: #fff; }
+    :root[data-theme="light"] button.theme { color: var(--text-3); }
+    button:hover { filter: brightness(1.08); }
+    button:active { transform: translateY(1px); }
+    .error { display: none; align-items: center; gap: .5rem; background: rgba(239, 77, 92, .1); border: 1px solid rgba(239, 77, 92, .35); color: var(--crit); padding: .65rem .9rem; border-radius: var(--radius-md); font-size: .8rem; margin-bottom: 1rem; }
+    .error.show { display: flex; }
+    .foot { display: flex; align-items: center; justify-content: space-between; margin-top: 1.4rem; font-size: .64rem; color: var(--text-3); font-family: var(--font-mono); }
+    .foot .status { display: inline-flex; align-items: center; gap: .4rem; }
+    .foot .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 6px rgba(52, 211, 153, .6); }
+    .theme { background: none; border: 1px solid var(--line); color: var(--text-3); width: auto; padding: .25rem .5rem; margin: 0; font-size: .62rem; font-weight: 600; border-radius: .4rem; }
+    .theme:hover { color: var(--text-1); filter: none; }
+
+    @media (max-width: 980px) {
+      body { overflow: auto; }
+      .wrap { grid-template-columns: 1fr; grid-template-rows: auto 1fr; min-height: 100dvh; }
+      .brand-panel { padding: 2.4rem 1.5rem .6rem; gap: 1.2rem; align-items: center; text-align: center; }
+      .logo { flex-direction: column; gap: .8rem; }
+      .features { grid-template-columns: 1fr 1fr 1fr; }
+      .form-panel { padding: 1rem 1.5rem 3rem; align-items: flex-start; }
+    }
+    @media (max-width: 600px) {
+      .features, .tagline { display: none; }
+      .brand-panel { padding: 1.6rem 1rem .4rem; gap: .6rem; }
+      .logo { flex-direction: row; gap: .7rem; }
+      .mark, .mark svg.core { width: 56px; height: 56px; }
+      .mark .ring, .mark .ring2 { display: none; }
+      .wordmark h1 { font-size: 1.5rem; }
+      .wordmark small { font-size: .58rem; }
+      .form-panel { padding: .6rem 1rem 2rem; }
+      .card { padding: 1.3rem 1.1rem; }
+      .bg .orb { display: none; }
+    }
+    @media (max-height: 560px) and (max-width: 980px) { .brand-panel { display: none; } .form-panel { padding-top: 1.5rem; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
+  </style>
+</head>
+
+<body>
+  <div class="bg"><div class="grid"></div><div class="orb o1"></div><div class="orb o2"></div></div>
+
+  <div class="wrap">
+    <section class="brand-panel">
+      <div class="logo">
+        <div class="mark">
+          <div class="ring2"></div><div class="ring"></div>
+          <svg class="core" viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="pcA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b942"/><stop offset=".6" stop-color="#f08a3c"/><stop offset="1" stop-color="#3dd6c0"/></linearGradient>
+              <linearGradient id="pcB" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#3dd6c0"/><stop offset="1" stop-color="#f5b942"/></linearGradient>
+            </defs>
+            <path d="M32 3 L57 17.5 V46.5 L32 61 L7 46.5 V17.5 Z" fill="none" stroke="url(#pcA)" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M17.2 44.9 A18 18 0 1 1 46.8 44.9" fill="none" stroke="url(#pcB)" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+            <path d="M35.5 16 L23 35 h8.5 l-2.5 13 12.5-19 h-8.5 z" fill="url(#pcA)"/>
+            <circle cx="17.2" cy="44.9" r="2.6" fill="#3987e5"/><circle cx="32" cy="12.5" r="2.6" fill="#d95926"/><circle cx="46.8" cy="44.9" r="2.6" fill="#199e70"/>
+          </svg>
+        </div>
+        <div class="wordmark"><h1 id="siteName">POWER CENTER</h1><small id="siteSubtitle">PSE Energy Monitor</small></div>
+      </div>
+      <p class="tagline">Every plant, every line, every meter on one screen — <b>live readings</b>, <b>power-quality alarms</b> and <b>peak-demand control</b> that talks straight to your PLCs.</p>
+      <div class="features">
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 20V9l6 4V9l6 4V9l6 4v7"/><path d="M2 20h20"/></svg></div><b>Multi-plant</b><span>Sites, lines and sections in one tree, hundreds of devices in parallel</span></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 12c2-6 4-6 6 0s4 6 6 0 4-6 6 0"/></svg></div><b>Any device</b><span>Schneider, Modbus, Siemens S7, MQTT, HTTP — configurable tags per device</span></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><b>Peak demand</b><span>15-minute projection and automatic load shedding through the PLC</span></div>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <form class="card" id="loginForm">
+        <h2>Sign in</h2>
+        <div class="sub">Use the account your administrator created for you</div>
+        <div class="error" id="error">Invalid username or password</div>
+        <label for="username">Username</label>
+        <div class="in"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input type="text" id="username" name="username" required autocomplete="username" placeholder="username" autofocus></div>
+        <label for="password">Password</label>
+        <div class="in"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input type="password" id="password" name="password" required autocomplete="current-password" placeholder="password"></div>
+        <button type="submit">Sign in</button>
+        <div class="foot"><span class="status"><i></i><span id="srv">server online</span></span><button type="button" class="theme" id="themeBtn">Light theme</button></div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    fetch('/api/settings').then(r => r.json()).then(d => {
+      if (!d.success) return;
+      document.getElementById('siteName').textContent = d.settings.siteName;
+      document.getElementById('siteSubtitle').textContent = d.settings.siteSubtitle;
+      document.title = 'Sign in - ' + d.settings.siteName;
+    }).catch(() => { document.getElementById('srv').textContent = 'server unreachable'; });
+
+    const themeBtn = document.getElementById('themeBtn');
+    const syncTheme = () => { themeBtn.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? 'Dark theme' : 'Light theme'; };
+    themeBtn.addEventListener('click', () => { const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', t); try { localStorage.setItem('pc-theme', t); } catch (e) {} syncTheme(); });
+    syncTheme();
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const err = document.getElementById('error');
+      err.classList.remove('show');
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value }),
+        });
+        const data = await res.json();
+        if (data.success) window.location.href = '/';
+        else { err.textContent = res.status === 429 ? 'Too many attempts — try again in 10 minutes' : 'Invalid username or password'; err.classList.add('show'); }
+      } catch (e2) { err.classList.add('show'); }
+    });
+  </script>
+</body>
+
+</html>
