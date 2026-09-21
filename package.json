@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
+    "dev": "node src/tools/dev.js",
     "seed": "node src/seed.js",
     "user:add": "node src/tools/user.js add",
     "user:passwd": "node src/tools/user.js passwd"

@@ -2,7 +2,7 @@
  * Power Center client for Node.js (>= 18) and browsers.
  *
  *   const { PowerCenter } = require('./power-center-client');
- *   const pc = new PowerCenter('http://server:8095', 'pc_xxxx');
+ *   const pc = new PowerCenter('http://server:64088', 'pc_xxxx');
  *   const latest = await pc.latest('L1-PM01');
  *   const hist = await pc.history('L1-PM01', { from: Date.now() - 86400000, interval: 900, keys: ['p_total', 'v_ln_avg'] });
  *   await pc.ingest('PULSE-01', { kwh_import: 1200.5, p_total: 3.1 });

@@ -2,7 +2,7 @@
 Power Center client for Python 3.8+ (standard library only).
 
     from power_center import PowerCenter
-    pc = PowerCenter("http://server:8095", "pc_xxxx")
+    pc = PowerCenter("http://server:64088", "pc_xxxx")
     print(pc.latest("L1-PM01")["values"]["p_total"])
     rows = pc.history("L1-PM01", from_ms=..., to_ms=..., interval=900, keys=["p_total", "v_ln_avg"])
     pc.ingest("PULSE-01", {"kwh_import": 1200.5, "p_total": 3.1})

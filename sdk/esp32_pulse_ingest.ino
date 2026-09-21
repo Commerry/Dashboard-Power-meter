@@ -16,7 +16,7 @@
 
 const char* WIFI_SSID   = "factory-wifi";
 const char* WIFI_PASS   = "password";
-const char* SERVER_URL  = "http://10.10.0.5:8095/api/v1/ingest";
+const char* SERVER_URL  = "http://10.10.0.5:64088/api/v1/ingest";
 const char* API_KEY     = "pc_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 const char* METER_CODE  = "PULSE-01";
 

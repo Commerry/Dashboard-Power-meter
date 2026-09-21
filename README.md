@@ -56,8 +56,11 @@ bash install.sh
 ```bash
 npm install
 cp .env.example .env      # Windows: copy .env.example .env
-npm start                 # http://localhost:8095
+npm start                 # http://localhost:64088
+npm run dev               # same server with restart-on-change on port 64089 (DEV_PORT)
 ```
+
+Ports: `PORT=64088` for production (`npm start` / pm2), `DEV_PORT=64089` for `npm run dev` — both can run side by side. Open the port in the firewall (`netsh advfirewall firewall add rule name="Power Center" dir=in action=allow protocol=TCP localport=64088` on Windows, `ufw allow 64088/tcp` on Linux).
 
 Sign in with `ADMIN_USER` / `ADMIN_PASS` from `.env` (default `admin` / `admin` — **change it before production**).
 

@@ -1,6 +1,6 @@
 # Power Center — Public API
 
-Base URL: `http://<server>:8095/api/v1`
+Base URL: `http://<server>:64088/api/v1`
 
 ## Authentication
 
@@ -173,7 +173,7 @@ Ingested values go through the same pipeline as polled ones: derived averages/un
 
 ## WebSocket
 
-`ws://<server>:8095/ws?api_key=pc_...`
+`ws://<server>:64088/ws?api_key=pc_...`
 
 Send a subscription after connecting:
 
@@ -205,14 +205,14 @@ Messages:
 
 ```bash
 # latest values
-curl -H "X-Api-Key: $KEY" http://server:8095/api/v1/meters/L1-PM01/latest
+curl -H "X-Api-Key: $KEY" http://server:64088/api/v1/meters/L1-PM01/latest
 
 # 15-minute averages for yesterday
-curl -H "X-Api-Key: $KEY" "http://server:8095/api/v1/meters/1/history?from=2026-09-20T00:00:00+07:00&to=2026-09-21T00:00:00+07:00&interval=900&keys=p_total,v_ln_avg,pf"
+curl -H "X-Api-Key: $KEY" "http://server:64088/api/v1/meters/1/history?from=2026-09-20T00:00:00+07:00&to=2026-09-21T00:00:00+07:00&interval=900&keys=p_total,v_ln_avg,pf"
 
 # push a reading
 curl -X POST -H "X-Api-Key: $KEY" -H "Content-Type: application/json" \
-  -d '{"meter":"PULSE-01","values":{"kwh_import":1200.5,"p_total":3.1}}' http://server:8095/api/v1/ingest
+  -d '{"meter":"PULSE-01","values":{"kwh_import":1200.5,"p_total":3.1}}' http://server:64088/api/v1/ingest
 ```
 
 ## Siemens S7 PLC (Snap7)

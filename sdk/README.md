@@ -12,7 +12,7 @@ Full endpoint reference: [../docs/API.md](../docs/API.md)
 
 ```js
 const { PowerCenter } = require('./power-center-client');
-const pc = new PowerCenter('http://server:8095', process.env.PC_KEY);
+const pc = new PowerCenter('http://server:64088', process.env.PC_KEY);
 
 const { values } = await pc.latest('L1-PM01');
 console.log(values.p_total, 'kW');
@@ -29,7 +29,7 @@ const sub = pc.subscribe({ lineId: 1 }, (msg) => {
 
 ```python
 from power_center import PowerCenter
-pc = PowerCenter("http://server:8095", "pc_xxx")
+pc = PowerCenter("http://server:64088", "pc_xxx")
 for m in pc.meters(line_id=1):
     print(m["name"], m["status"], m["values"].get("p_total"))
 pc.ingest("PULSE-01", {"kwh_import": 1200.5, "p_total": 3.1})

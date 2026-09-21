@@ -16,7 +16,8 @@ const bool = (key, def) => {
 };
 
 module.exports = {
-  port: int('PORT', 8095),
+  port: int('PORT', 64088),
+  devPort: int('DEV_PORT', 64089),
   siteName: str('SITE_NAME', 'POWER CENTER'),
   siteSubtitle: str('SITE_SUBTITLE', 'PSE Energy Monitor'),
   adminUser: str('ADMIN_USER', 'admin'),

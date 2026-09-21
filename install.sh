@@ -68,7 +68,7 @@ else
 fi
 echo ""
 
-PORT=$(grep -oP '^PORT=\K[0-9]+' .env 2>/dev/null || echo 8095)
+PORT=$(grep -oP '^PORT=\K[0-9]+' .env 2>/dev/null || echo 64088)
 echo "=========================================="
 echo "Power Center is running"
 echo "  Dashboard : http://<this-pc-ip>:$PORT   (login: ADMIN_USER / ADMIN_PASS from .env)"
